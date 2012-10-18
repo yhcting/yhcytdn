@@ -18,12 +18,14 @@ import java.util.regex.Pattern;
 // This is main class for HACKING Youtube protocol.
 //
 public class YTHacker{
+    public static final int     YTQUALITY_SCORE_MAXIMUM     = 100;
     public static final int     YTQUALITY_SCORE_HIGHEST     = 100;
     public static final int     YTQUALITY_SCORE_HIGH        = 80;
     public static final int     YTQUALITY_SCORE_MIDHIGH     = 60;
     public static final int     YTQUALITY_SCORE_MIDLOW      = 40;
     public static final int     YTQUALITY_SCORE_LOW         = 20;
     public static final int     YTQUALITY_SCORE_LOWEST      = 0;
+    public static final int     YTQUALITY_SCORE_MINIMUM     = 0;
 
     // See youtube api documentation.
     private static final int    YTVID_LENGTH = 11;

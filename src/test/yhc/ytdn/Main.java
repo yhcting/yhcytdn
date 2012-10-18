@@ -12,11 +12,11 @@ public class Main {
         Utils.init();
         NetLoader loader = null;
         try {
-            YTHacker ythack = new YTHacker("3PVFSkg4cXc");
+            YTHacker ythack = new YTHacker("VkW2N-blZcc");
 
             loader = ythack.start();
             eAssert(null != loader);
-            YTHacker.YtVideo ytv = ythack.getVideo(YTHacker.YTQUALITY_SCORE_LOWEST);
+            YTHacker.YtVideo ytv = ythack.getVideo(YTHacker.YTQUALITY_SCORE_MIDLOW);
 
             // why - 1st works
             // but second doesn't work???
