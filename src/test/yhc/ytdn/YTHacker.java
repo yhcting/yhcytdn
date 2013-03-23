@@ -57,7 +57,7 @@ public class YTHacker{
         = Pattern.compile(".*\"url_encoded_fmt_stream_map\": \"([^\"]+)\".*");
 
     private static final Pattern    sYtUrlGenerate204Pattern
-        = Pattern.compile(".*\\(\"(http\\:.+\\/generate_204\\?[^)]+)\"\\).*");
+        = Pattern.compile(".*\"(http\\:.+\\/generate_204\\?[^\"]+)\".*");
 
     private final NetLoader     mLoader = new NetLoader();;
     private final String        mYtvid;

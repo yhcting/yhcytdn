@@ -13,20 +13,12 @@ import java.net.UnknownHostException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
@@ -62,28 +54,12 @@ public class NetLoader {
             eAssert(false);
             return null;
         }
-
-        SchemeRegistry supportedSchemes = new SchemeRegistry();
-        supportedSchemes.register(new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
-        //supportedSchemes.register(new Scheme("https", 443, SSLSocketFactory.getDefault()));
-        HttpHost proxy = new HttpHost("wwwgate0.mot.com", 1080, "http");
-
-        HttpParams params = new BasicHttpParams();
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, "UTF-8");
-        HttpProtocolParams.setUseExpectContinue(params, true);
-        HttpConnectionParams.setConnectionTimeout(params, 3000);
-        HttpConnectionParams.setSoTimeout(params, 3000);
-        params.setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        //HttpProtocolParams.setUserAgent(hc.getParams(), Policy.HTTP_UASTRING);
+        HttpClient hc = new DefaultHttpClient();
+        HttpParams params = hc.getParams();
+        HttpConnectionParams.setConnectionTimeout(params, Policy.NETWORK_CONN_TIMEOUT);
+        HttpConnectionParams.setSoTimeout(params, Policy.NETWORK_CONN_TIMEOUT);
+        HttpProtocolParams.setUserAgent(hc.getParams(), Policy.HTTP_UASTRING);
         params.setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.RFC_2109);
-
-        ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, supportedSchemes);
-
-        HttpClient hc  = new DefaultHttpClient(ccm, params);
-        HttpProtocolParams.setUserAgent(hc.getParams(),
-                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.1025.168 Safari/535.19");
-
         return hc;
     }
 

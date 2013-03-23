@@ -6,9 +6,17 @@ import static test.yhc.ytdn.Utils.logW;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) {
+    public static String
+    getHomeDirectory() {
+        Map<String, String> env = System.getenv();
+        return env.get("HOME");
+    }
+
+    public static void
+    main(String[] args) {
         Utils.init();
         NetLoader loader = null;
         try {
@@ -18,20 +26,16 @@ public class Main {
             eAssert(null != loader);
             YTHacker.YtVideo ytv = ythack.getVideo(YTHacker.YTQUALITY_SCORE_MIDLOW);
 
-            // why - 1st works
-            // but second doesn't work???
-            //content = mLoader.getHttpContent(new URI(mYtr.generate_204_url.replace("generate_204", "videoplayback")), false);
             NetLoader.HttpRespContent content = loader.getHttpContent(new URI(ytv.url), false);
-            File f = new File("/home/hbg683/ytdntest.mp4");
-    //        Long iBytesMax = Long.parseLong(mResponse.getFirstHeader("Content-Length").getValue());
+            File f = new File(getHomeDirectory() + "/yhcytdn_test.mp4");
             FileOutputStream fos = new FileOutputStream(f);
-            byte[] bytes = new byte[4*4096];
+            byte[] bytes = new byte[4 * 4096];
             Integer iBytesRead = 1;
 
             while (iBytesRead>0) {
                 iBytesRead = content.stream.read(bytes);
                 try {fos.write(bytes,0,iBytesRead);} catch (IndexOutOfBoundsException ioob) {}
-            } // while
+            }
             fos.close();
         } catch (Exception e) {
             logW("Unexpected Exception " + e.getMessage());
